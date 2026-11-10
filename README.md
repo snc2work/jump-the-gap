@@ -72,6 +72,11 @@ python3.13 -m venv .venv
 
 `export_web.py` updates the assets under `web/public/model/`. To save a standalone replay of sampled futures, run `.venv/bin/python export_preview.py` and open `data/preview.html`.
 
+## Related projects
+
+- [ABYSS GEMS](https://github.com/snc2work/abyss-gems) is a two-player falling-block puzzle where a world model predicts how the board changes during a match.
+- [Little Quest](https://github.com/snc2work/little-quest) is a playable 32×32 adventure where a world model draws the next frame from the current image and your input.
+
 ## License
 
 [MIT](LICENSE)

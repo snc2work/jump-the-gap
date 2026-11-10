@@ -100,6 +100,11 @@ open data/preview.html
 
 ONNXモデルと7コース分の開始場面を `web/public/model/` に出力します。
 
+## 関連プロジェクト
+
+- [ABYSS GEMS](https://github.com/snc2work/abyss-gems) は、対戦中の盤面の変化を世界モデルが予測する、2人対戦の落ち物パズルです。
+- [Little Quest](https://github.com/snc2work/little-quest) は、直前の画像とプレイヤーの操作から、世界モデルが次の画面を描く32×32ピクセルのアドベンチャーです。
+
 ## ライセンス
 
 [MIT](LICENSE)
