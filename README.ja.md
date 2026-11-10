@@ -26,7 +26,7 @@ Web版では3層モデル（779,684パラメータ）を、Web Worker内のONNX 
 
 ## ローカルで動かす
 
-Node.js 22.12以降とpnpm 10.33.2が必要です。学習済みモデルと開始場面は同梱しています。
+Node.js 22.12以降とpnpm 10.33.2が必要です。学習済みモデルと開始場面を同梱しているため、Webデモの起動にPython環境は不要です。
 
 ```sh
 cd web
@@ -38,8 +38,12 @@ pnpm dev
 
 ## 学習用動画の生成
 
+データ生成・再学習・ONNX出力にはPython 3.13と仮想環境を使います。NumPy、PyTorch、ONNXのバージョン範囲は [requirements.txt](requirements.txt) に記載しています。学習はPyTorchのMPSが使える環境ではMPSを使い、それ以外ではCPUで実行します。
+
+リポジトリのルートで次を実行します。
+
 ```sh
-python3 -m venv .venv
+python3.13 -m venv .venv
 .venv/bin/python -m pip install -r requirements.txt
 .venv/bin/python generate.py data
 ```

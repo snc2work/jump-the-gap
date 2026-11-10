@@ -39,7 +39,7 @@ Copying the previous frame gives 38.9% exact next frames. The results are from a
 
 ## Run locally
 
-Requires Node.js 22.12 or later and pnpm 10.33.2. The trained ONNX model and seven starting scenes are included.
+Requires Node.js 22.12 or later and pnpm 10.33.2. The trained ONNX model and seven starting scenes are included, so the Web demo runs without a Python environment.
 
 ```sh
 cd web
@@ -51,10 +51,12 @@ Open the URL printed by Vite. Run `pnpm build` from `web/` to type-check the Typ
 
 ## Reproduce the model
 
+Use Python 3.13 and a virtual environment with NumPy, PyTorch, and ONNX. The dependency ranges are in [requirements.txt](requirements.txt). Training uses PyTorch’s MPS backend when available and otherwise runs on the CPU.
+
 Run these commands from the repository root to generate the data, train the three-layer model, evaluate it, and export the browser assets.
 
 ```sh
-python3 -m venv .venv
+python3.13 -m venv .venv
 .venv/bin/python -m pip install -r requirements.txt
 .venv/bin/python generate.py data
 .venv/bin/python train.py --steps 2000 --layers 3 --output data/compare-3layers.pt
