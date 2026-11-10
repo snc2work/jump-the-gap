@@ -39,7 +39,7 @@ Copying the previous frame gives 38.9% exact next frames. The results are from a
 
 ## Run locally
 
-Requires Node.js 22.12 or later and pnpm 10.33.2. The trained ONNX model and seven starting scenes are included, so the Web demo runs without a Python environment.
+Requires Node.js 24.22.1 or later and pnpm 10.33.2. The trained ONNX model and seven starting scenes are included, so the Web demo runs without a Python environment.
 
 ```sh
 cd web
