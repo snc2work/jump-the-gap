@@ -8,17 +8,10 @@
 * { box-sizing: border-box; }
 body { margin: 0; color: var(--ink); background: var(--paper); font-family: Georgia, serif; }
 main { width: min(1160px, 100% - 42px); margin: 35px auto; }
-header {
-  display: flex;
-  align-items: baseline;
-  flex-wrap: wrap;
-  gap: 6px 22px;
-  padding: 12px 0 15px;
-  border-bottom: 1px solid var(--ink);
-}
-.subtitle { max-width: 56ch; font-size: 16px; line-height: 1.4; }
+header { padding-bottom: 14px; border-bottom: 1px solid var(--ink); }
 h1, h2, h3, p { margin: 0; }
-h1 { font-size: clamp(36px, 5vw, 58px); line-height: 1.1; letter-spacing: -.045em; }
+h1 { font-size: clamp(30px, 4vw, 44px); line-height: 1.12; letter-spacing: -.035em; }
+.subtitle { max-width: 70ch; margin-top: 6px; font-size: 16px; line-height: 1.45; }
 #status, .plan, .outcome { font: 13px/1.5 ui-monospace, monospace; }
 #status { margin-top: 8px; color: var(--accent); }
 .workspace { display: grid; grid-template-columns: minmax(0, 1fr) minmax(85px, .45fr) minmax(0, 1.55fr); gap: 22px; margin-top: 10px; }
