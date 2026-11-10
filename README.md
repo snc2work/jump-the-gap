@@ -8,6 +8,8 @@ I made this to see what a world model could do in a small experiment. Could it d
 
 I used a simulator with rules for gravity and landing to generate the training clips. In the demo, the model draws each new 32×32 frame and feeds it back in to predict the next one. That lets you watch each plan play out from takeoff through landing.
 
+The model drew jumps where the jumper landed and stopped on the far ledge, and others where the jumper landed and then fell off. I sampled 12 futures per scene using the same actions each time. Both outcomes appeared in 3 of the 24 scenes the model had not trained on. Drawing a coherent sequence through landing was still difficult.
+
 **[Watch the demo in your browser](https://snc2work.github.io/jump-the-gap/)**
 
 ![Jump the Gap demo with the current scene on the left and three predicted jumps on the right. The selected jump is outlined in blue.](assets/readme/demo.png)
