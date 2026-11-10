@@ -2,7 +2,7 @@
 
 [日本語](README.ja.md)
 
-Jump the Gap is a browser demo in which a small **world model** draws three possible futures from the same starting scene, one for each jump plan. The page compares the predicted landings, favors jumps that come to a stop on the far ledge, and replays the chosen prediction on the main screen.
+Jump the Gap is a browser demo in which a small **world model** draws three possible futures from the same starting scene, one for each jump plan. The program then compares the predicted landings, favors jumps that come to a stop on the far ledge, and replays the chosen prediction on the main screen.
 
 I made this to see what a world model could do in a small experiment. Could it draw what happens next from images and actions alone? Could it start from the same scene and predict a different future for each jump plan?
 
