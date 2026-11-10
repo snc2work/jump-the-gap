@@ -4,7 +4,7 @@
 
 A small **world model** that imagines three ways to cross a gap before taking the jump. It draws the next 32×32 frame from recent frames and actions, then feeds its own drawing back in to continue through takeoff, flight, and landing.
 
-**[Watch the demo in your browser](https://snc2work.github.io/jump_the_gap/)**
+**[Watch the demo in your browser](https://snc2work.github.io/jump-the-gap/)**
 
 ![Jump the Gap demo with the current scene on the left and three predicted jumps on the right. The selected jump is outlined in blue.](assets/readme/demo.png)
 
