@@ -2,7 +2,11 @@
 
 [日本語](README.ja.md)
 
-A small **world model** that imagines three ways to cross a gap before taking the jump. It draws the next 32×32 frame from recent frames and actions, then feeds its own drawing back in to continue through takeoff, flight, and landing.
+Jump the Gap is a browser demo in which a small **world model** imagines three ways to jump across a gap. The demo plays back one of those futures on the main screen.
+
+I made this to see what a world model could do in a small experiment. Could it draw what happens next from images and actions alone? Could it start from the same scene and predict a different future for each jump plan?
+
+I used a simulator with rules for gravity and landing to generate the training clips. In the demo, the model draws each new 32×32 frame and feeds it back in to predict the next one. That lets you watch each plan play out from takeoff through landing.
 
 **[Watch the demo in your browser](https://snc2work.github.io/jump-the-gap/)**
 
