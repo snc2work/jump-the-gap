@@ -28,7 +28,7 @@ pnpm install --frozen-lockfile
 pnpm dev
 ```
 
-ターミナルに表示されたURLを開きます。`pnpm build` で `web/dist/` に配信用ファイルを出力できます。
+ターミナルに表示されたURLを開きます。`pnpm build` でTypeScriptの型をチェックし、`web/dist/` に配信用ファイルを出力します。
 
 ## 学習用動画の生成
 

@@ -41,7 +41,7 @@ pnpm install --frozen-lockfile
 pnpm dev
 ```
 
-Open the URL printed by Vite. To build the static site, run `pnpm build` from `web/`.
+Open the URL printed by Vite. Run `pnpm build` from `web/` to type-check the TypeScript source and build the static site.
 
 ## Reproduce the model
 

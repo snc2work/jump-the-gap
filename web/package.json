@@ -9,13 +9,14 @@
   },
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "tsc --noEmit && vite build",
     "preview": "vite preview"
   },
   "dependencies": {
     "onnxruntime-web": "1.31.1"
   },
   "devDependencies": {
+    "typescript": "5.9.3",
     "vite": "8.3.6"
   }
 }

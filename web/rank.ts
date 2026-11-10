@@ -1,6 +1,8 @@
+import type { Frame } from "./model-types";
+
 const SIZE = 32;
 
-export function readCourse(frame) {
+export function readCourse(frame: Frame) {
   const floor = frame.subarray(SIZE * (SIZE - 1));
   const right = floor.lastIndexOf(1);
   const left = floor.lastIndexOf(0, right) + 1;
@@ -10,7 +12,9 @@ export function readCourse(frame) {
   return { left, right, surface, terrain };
 }
 
-function findPlayer(frame, terrain) {
+type Player = { x: number; foot: number };
+
+function findPlayer(frame: Frame, terrain: Frame): Player | null | undefined {
   let top = -1;
   let bottom = -1;
   for (let i = 0; i < frame.length; i++) {
@@ -28,9 +32,10 @@ function findPlayer(frame, terrain) {
   return { x: bottom % SIZE, foot: Math.floor(bottom / SIZE) + 1 };
 }
 
-export function rankFuture(frames, { left, right, surface, terrain }) {
+export function rankFuture(frames: Frame[], { left, right, surface, terrain }: ReturnType<typeof readCourse>) {
   const positions = frames.map(frame => findPlayer(frame, terrain));
-  const onPlatform = player => player && player.foot === surface && player.x >= left && player.x <= right;
+  const onPlatform = (player: Player | null | undefined): player is Player =>
+    player != null && player.foot === surface && player.x >= left && player.x <= right;
   const last = positions.at(-1);
   const clarity = 1 - positions.filter(player => player === undefined).length / frames.length;
   if (onPlatform(last)) {

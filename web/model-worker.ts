@@ -1,6 +1,7 @@
 import { env, InferenceSession, Tensor } from "onnxruntime-web/wasm";
 import wasmUrl from "onnxruntime-web/ort-wasm-simd-threaded.wasm?url";
 import moduleUrl from "onnxruntime-web/ort-wasm-simd-threaded.mjs?url";
+import type { Action, Frame, History, WorkerRequest, WorkerResponse } from "./model-types";
 
 const CONTEXT = 32;
 const PIXELS = 32 * 32;
@@ -8,9 +9,10 @@ const MODES = 4;
 
 env.wasm.numThreads = 1;
 env.wasm.wasmPaths = { wasm: wasmUrl, mjs: moduleUrl };
-let session;
+const worker = self as unknown as DedicatedWorkerGlobalScope;
+let session: InferenceSession | undefined;
 
-function drawMode(weights) {
+function drawMode(weights: Float32Array) {
   const max = Math.max(...weights);
   const masses = weights.map(weight => Math.exp(weight - max));
   let threshold = Math.random() * masses.reduce((sum, weight) => sum + weight, 0);
@@ -21,10 +23,10 @@ function drawMode(weights) {
   return MODES - 1;
 }
 
-async function rollout(history, plan) {
+async function rollout(session: InferenceSession, history: History, plan: Action[]) {
   const frames = [...history.frames];
   const actions = [...history.actions];
-  const future = [];
+  const future: Frame[] = [];
   const pixels = new Uint8Array(CONTEXT * PIXELS);
   const commands = new BigInt64Array(CONTEXT);
   for (const action of plan) {
@@ -42,6 +44,9 @@ async function rollout(history, plan) {
       actions: new Tensor("int64", commands, [1, CONTEXT]),
       index: new Tensor("int64", BigInt64Array.of(BigInt(count - 1)), [1]),
     });
+    if (!(weights.data instanceof Float32Array) || !(logits.data instanceof Float32Array)) {
+      throw new Error("Expected float32 model outputs.");
+    }
     const mode = drawMode(weights.data);
     const frame = Uint8Array.from(logits.data.subarray(mode * PIXELS, (mode + 1) * PIXELS), logit => Number(logit > 0));
     frames.push(frame);
@@ -50,19 +55,18 @@ async function rollout(history, plan) {
   return future;
 }
 
-self.onmessage = async ({ data }) => {
-  const { id, model, history, plan } = data;
+worker.onmessage = async ({ data }: MessageEvent<WorkerRequest>) => {
+  const { id } = data;
   try {
-    let result;
-    if (model) {
-      session = await InferenceSession.create(model, { executionProviders: ["wasm"] });
-      result = "wasm";
+    if (data.type === "load") {
+      session = await InferenceSession.create(data.model, { executionProviders: ["wasm"] });
+      worker.postMessage({ id, frames: [] } satisfies WorkerResponse);
     } else {
       if (!session) throw new Error("The world model is not loaded.");
-      result = await rollout(history, plan);
+      const frames = await rollout(session, data.history, data.plan);
+      worker.postMessage({ id, frames } satisfies WorkerResponse);
     }
-    self.postMessage({ id, result });
   } catch (error) {
-    self.postMessage({ id, error: String(error) });
+    worker.postMessage({ id, error: String(error) } satisfies WorkerResponse);
   }
 };
