@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="906" height="260" viewBox="0 0 906 260" role="img" aria-labelledby="title description">
+  <title id="title">Predicting the next frame during training</title>
+  <desc id="description">Four consecutive full 32 by 32 binary frames from training clip 84, frames 9 through 12, indexed from zero. The model sees the first three frames and the actions Run, Run, and Jump. The simulator frame just after Jump is the target for this prediction.</desc>
+  <rect x="1" y="1" width="904" height="258" rx="12" fill="#f2eddf" stroke="#cbc3b2"/>
+  <rect x="714" y="16" width="169" height="228" rx="8" fill="#e2eaff"/>
+  <g fill="#27261d" font-family="system-ui, sans-serif">
+    <text x="44" y="42" font-size="21" font-weight="700">Input to the world model</text>
+    <text x="44" y="63" font-size="14">Observed frames and actions (excerpt)</text>
+    <text x="798" y="42" text-anchor="middle" fill="#174fe0" font-size="20" font-weight="700">Training target</text>
+    <text x="798" y="63" text-anchor="middle" fill="#174fe0" font-size="14">Actual next frame</text>
+    <rect x="44" y="78" width="128" height="128" fill="#fff" stroke="#27261d"/>
+    <path transform="translate(44 78) scale(4)" d="M10 17h1v1h-1zM10 18h1v1h-1zM0 19h13v1h-13zM16 19h2v1h-2zM0 20h13v1h-13zM16 20h2v1h-2zM0 21h13v1h-13zM16 21h2v1h-2zM0 22h13v1h-13zM16 22h2v1h-2zM0 23h13v1h-13zM16 23h2v1h-2zM0 24h13v1h-13zM16 24h2v1h-2zM0 25h13v1h-13zM16 25h2v1h-2zM0 26h13v1h-13zM16 26h2v1h-2zM0 27h13v1h-13zM16 27h2v1h-2zM0 28h13v1h-13zM16 28h2v1h-2zM0 29h13v1h-13zM16 29h2v1h-2zM0 30h13v1h-13zM16 30h2v1h-2zM0 31h13v1h-13zM16 31h2v1h-2z" fill="#161616" shape-rendering="crispEdges"/>
+    <text x="108" y="230" text-anchor="middle" font-size="17">t − 2</text>
+    <rect x="231" y="78" width="128" height="128" fill="#fff" stroke="#27261d"/>
+    <path transform="translate(231 78) scale(4)" d="M11 17h1v1h-1zM11 18h1v1h-1zM0 19h13v1h-13zM16 19h2v1h-2zM0 20h13v1h-13zM16 20h2v1h-2zM0 21h13v1h-13zM16 21h2v1h-2zM0 22h13v1h-13zM16 22h2v1h-2zM0 23h13v1h-13zM16 23h2v1h-2zM0 24h13v1h-13zM16 24h2v1h-2zM0 25h13v1h-13zM16 25h2v1h-2zM0 26h13v1h-13zM16 26h2v1h-2zM0 27h13v1h-13zM16 27h2v1h-2zM0 28h13v1h-13zM16 28h2v1h-2zM0 29h13v1h-13zM16 29h2v1h-2zM0 30h13v1h-13zM16 30h2v1h-2zM0 31h13v1h-13zM16 31h2v1h-2z" fill="#161616" shape-rendering="crispEdges"/>
+    <text x="295" y="230" text-anchor="middle" font-size="17">t − 1</text>
+    <rect x="418" y="78" width="128" height="128" fill="#fff" stroke="#27261d"/>
+    <path transform="translate(418 78) scale(4)" d="M12 17h1v1h-1zM12 18h1v1h-1zM0 19h13v1h-13zM16 19h2v1h-2zM0 20h13v1h-13zM16 20h2v1h-2zM0 21h13v1h-13zM16 21h2v1h-2zM0 22h13v1h-13zM16 22h2v1h-2zM0 23h13v1h-13zM16 23h2v1h-2zM0 24h13v1h-13zM16 24h2v1h-2zM0 25h13v1h-13zM16 25h2v1h-2zM0 26h13v1h-13zM16 26h2v1h-2zM0 27h13v1h-13zM16 27h2v1h-2zM0 28h13v1h-13zM16 28h2v1h-2zM0 29h13v1h-13zM16 29h2v1h-2zM0 30h13v1h-13zM16 30h2v1h-2zM0 31h13v1h-13zM16 31h2v1h-2z" fill="#161616" shape-rendering="crispEdges"/>
+    <text x="482" y="230" text-anchor="middle" font-size="17">t</text>
+    <rect x="734" y="78" width="128" height="128" fill="#fff" stroke="#27261d"/>
+    <path transform="translate(734 78) scale(4)" d="M13 15h1v1h-1zM13 16h1v1h-1zM0 19h13v1h-13zM16 19h2v1h-2zM0 20h13v1h-13zM16 20h2v1h-2zM0 21h13v1h-13zM16 21h2v1h-2zM0 22h13v1h-13zM16 22h2v1h-2zM0 23h13v1h-13zM16 23h2v1h-2zM0 24h13v1h-13zM16 24h2v1h-2zM0 25h13v1h-13zM16 25h2v1h-2zM0 26h13v1h-13zM16 26h2v1h-2zM0 27h13v1h-13zM16 27h2v1h-2zM0 28h13v1h-13zM16 28h2v1h-2zM0 29h13v1h-13zM16 29h2v1h-2zM0 30h13v1h-13zM16 30h2v1h-2zM0 31h13v1h-13zM16 31h2v1h-2z" fill="#161616" shape-rendering="crispEdges"/>
+    <text x="798" y="230" text-anchor="middle" font-size="17">t + 1</text>
+    <text x="201.5" y="132" text-anchor="middle" font-size="15" font-weight="600">Run</text>
+    <path d="M183 145H213V141L220 146L213 151V147H183Z" fill="#514b3e"/>
+    <text x="388.5" y="132" text-anchor="middle" font-size="15" font-weight="600">Run</text>
+    <path d="M370 145H400V141L407 146L400 151V147H370Z" fill="#514b3e"/>
+    <text x="626.0" y="132" text-anchor="middle" font-size="15" font-weight="600">Jump</text>
+    <path d="M558 145H687V141L694 146L687 151V147H558Z" fill="#514b3e"/>
+  </g>
+</svg>

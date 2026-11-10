@@ -6,6 +6,8 @@ A small **world model** that imagines three ways to cross a gap before taking th
 
 **[Watch the demo in your browser](https://snc2work.github.io/jump_the_gap/)**
 
+![Jump the Gap demo with the current scene on the left and three predicted jumps on the right. The selected jump is outlined in blue.](assets/readme/demo.png)
+
 ## What you'll see
 
 - **Current** shows a recorded scene from a course held out of training.
@@ -15,6 +17,10 @@ A small **world model** that imagines three ways to cross a gap before taking th
 ## How the model works
 
 A simulator generates the training clips. The Transformer learns from binary images and four actions: coast, run, jump, and brake. Each step produces four candidate images and samples one. The training clips include jumps with the same visible lead-up and action sequence but slightly different takeoff speeds, so more than one landing outcome can fit the same input.
+
+![Four consecutive training frames. Three observed frames and the actions Run, Run, and Jump lead to the simulator's next frame, the training target.](assets/readme/training-frames.svg)
+
+Each input frame is the entire 32×32 image, including the ledges and the jumper. For the step shown here, the model sees the observed frames and the actions through Jump. Its prediction is trained against the next frame recorded by the simulator. Images and action IDs are the only inputs. The sequence of frames shows how the jumper moves.
 
 The browser runs the three-layer model (779,684 parameters) with ONNX Runtime Web inside a Web Worker. The demo reads the generated frames to rank the three plans by their predicted landing outcomes.
 
