@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>崖ジャンプ｜世界モデルの再生実験</title>
+<style>
+  :root {
+    color-scheme: light;
+    --paper: #f2eddf;
+    --ink: #25251c;
+    --accent: #8a3f26;
+    --line: #a9a292;
+    --muted: #575448;
+    --mono: ui-monospace, "Hiragino Kaku Gothic ProN", monospace;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--paper); color: var(--ink);
+    font-family: "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif; }
+  main { width: min(1100px, 100% - 40px); margin: 38px auto 30px; }
+  header { display: flex; justify-content: space-between; align-items: end; gap: 24px;
+    border-block: 1px solid var(--ink); padding: 14px 0 17px; }
+  h1, h2, p { margin: 0; }
+  h1 { font-size: clamp(34px, 5vw, 62px); line-height: 1.15; letter-spacing: -.075em; }
+  .serial, .tag, output { font: 12px/1.5 var(--mono); letter-spacing: .075em; }
+  .serial { color: var(--accent); font-weight: bold; }
+  .hardware { text-align: right; color: var(--muted); }
+  .intro { margin: 15px 0 23px; color: var(--muted); font-size: 14px; line-height: 1.7; }
+  .controls { display: flex; flex-wrap: wrap; gap: 10px 14px; align-items: center;
+    border-block: 1px solid var(--line); padding: 10px 0; }
+  button, select { font: inherit; color: var(--ink); border: 1px solid var(--ink);
+    border-radius: 3px; background: transparent; min-height: 36px; padding: 4px 9px; }
+  button { cursor: pointer; }
+  button:hover { background: #ded7c4; }
+  button:focus-visible, select:focus-visible, input:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+  #play { min-width: 94px; background: var(--ink); color: var(--paper); }
+  input { accent-color: var(--accent); min-width: 100px; flex: 1; }
+  .units { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2.15fr); gap: 24px; margin: 23px 0 20px; }
+  .unit h2 { font-size: 15px; padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+  .unit h2 span { margin-right: 8px; color: var(--accent); }
+  .futures { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+  figure { margin: 10px 0 0; min-width: 0; }
+  .lcd { padding: 7px; border-radius: 12px; background: #393b31; box-shadow: inset 0 0 0 1px #181a15, 0 2px 0 #9b9382; }
+  canvas { display: block; width: 100%; height: auto; aspect-ratio: 1; image-rendering: pixelated; border-radius: 5px; }
+  figcaption { min-height: 62px; margin-top: 9px; font-size: 13px; line-height: 1.5; }
+  figcaption select { display: block; max-width: 100%; margin-top: 4px; font-size: 12px; }
+  .brief, footer { border-top: 1px solid var(--line); padding: 12px 0; font-size: 13px; line-height: 1.75; }
+  .brief strong { color: var(--accent); }
+  footer { color: var(--muted); }
+  @media (max-width: 680px) {
+    main { width: calc(100% - 28px); margin-top: 17px; }
+    .units { grid-template-columns: minmax(0, 1fr); gap: 12px; }
+    .current figure { display: grid; grid-template-columns: minmax(90px, 32%) 1fr; align-items: center; gap: 15px; }
+    .current figcaption { min-height: 0; margin: 0; }
+    .futures { gap: 10px; }
+    .controls label { width: 100%; }
+    .hardware { display: none; }
+  }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <div><p class="serial">WM / 03　・　再生実験</p><h1>崖ジャンプ</h1></div>
+    <p class="tag hardware">32 × 32 LCD<br>3層トランスフォーマー</p>
+  </header>
+  <p class="intro">踏み切りの直前は同じ。操作も同じ。モデルが描いた二つの未来を並べる。</p>
+  <section class="controls" aria-label="再生操作">
+    <label for="scene">評価シーン</label>
+    <select id="scene"></select>
+    <button type="button" id="play">再生する</button>
+    <button type="button" id="reset">最初へ</button>
+    <input id="timeline" type="range" min="0" value="0" aria-label="表示コマ">
+    <output id="frame" for="timeline"></output>
+  </section>
+  <div class="units">
+    <section class="unit current">
+      <h2><span class="tag">00</span>いま</h2>
+      <figure>
+        <div class="lcd"><canvas width="32" height="32" id="current" role="img" aria-label="踏み切り直前の盤面"></canvas></div>
+        <figcaption>二つの未来が始まる、同じ踏み切り位置。</figcaption>
+      </figure>
+    </section>
+    <section class="unit">
+      <h2><span class="tag">01–02</span>頭の中の未来</h2>
+      <div class="futures">
+        <figure>
+          <div class="lcd"><canvas width="32" height="32" id="future-a" role="img" aria-label="未来 A の盤面"></canvas></div>
+          <figcaption>未来 A<select id="sample-a" aria-label="未来 A のサンプル"></select></figcaption>
+        </figure>
+        <figure>
+          <div class="lcd"><canvas width="32" height="32" id="future-b" role="img" aria-label="未来 B の盤面"></canvas></div>
+          <figcaption>未来 B<select id="sample-b" aria-label="未来 B のサンプル"></select></figcaption>
+        </figure>
+      </div>
+    </section>
+  </div>
+  <p class="brief" id="plan"></p>
+  <footer id="method"></footer>
+</main>
+<script type="application/json" id="rollouts">__ROLLOUT_DATA__</script>
+<script>
+  const cases = JSON.parse(document.querySelector("#rollouts").textContent);
+  const labels = { stopped: "着地して止まる", fell_after_landing: "着地後に落ちる",
+    invalid: "画面が崩れる", other: "その他" };
+  const $ = id => document.getElementById(id);
+  const selects = [$("sample-a"), $("sample-b")];
+  const futureCanvases = [$("future-a"), $("future-b")];
+  const format = n => String(n).padStart(2, "0");
+  const actions = ["惰性で進む", "走る", "跳ぶ", "ブレーキ"];
+  const bytesPerFrame = 128;
+  let scene, startingFrame, futures, frame = 0, timer = null;
+  let finalHold = 0;
+
+  function draw(canvas, bytes, offset = 0) {
+    const ctx = canvas.getContext("2d");
+    const image = ctx.createImageData(32, 32);
+    for (let i = 0; i < 1024; i++) {
+      const bit = (bytes.charCodeAt(offset + (i >> 3)) >> (7 - (i & 7))) & 1;
+      image.data.set(bit ? [41, 48, 32, 255] : [186, 196, 162, 255], i * 4);
+    }
+    ctx.putImageData(image, 0, 0);
+  }
+
+  function render() {
+    futureCanvases.forEach((canvas, i) => {
+      if (frame === 0) draw(canvas, startingFrame);
+      else draw(canvas, futures[Number(selects[i].value)], (frame - 1) * bytesPerFrame);
+    });
+    $("timeline").value = frame;
+    $("frame").textContent = format(frame) + " / " + format(scene.actions.length);
+    const command = frame ? actions[scene.actions[frame - 1]] : "踏み切り直前";
+    $("plan").textContent = `助走 ${scene.run}ステップ　／　崖の間隔 ${scene.gap}px　／　着地面 ${scene.width}px　／　表示中 ${command}`;
+  }
+
+  function pause() {
+    clearInterval(timer);
+    timer = null;
+    $("play").textContent = "再生する";
+  }
+
+  function loadScene() {
+    pause();
+    scene = cases[Number($("scene").value)];
+    startingFrame = atob(scene.current);
+    futures = scene.samples.map(sample => atob(sample.frames));
+    selects.forEach((select, i) => {
+      select.replaceChildren(...scene.samples.map((sample, index) =>
+        new Option(`${format(index + 1)}　${labels[sample.outcome]}`, index)));
+      select.value = scene.pair[i];
+    });
+    frame = 0;
+    finalHold = 0;
+    $("timeline").max = scene.actions.length;
+    draw($("current"), startingFrame);
+    render();
+  }
+
+  for (const [index, item] of cases.entries()) {
+    $("scene").add(new Option(`#${format(item.number)}　${item.both ? "両方の未来が出た例" : "その他の評価例"}`, index));
+  }
+  $("scene").addEventListener("change", loadScene);
+  selects.forEach(select => select.addEventListener("change", render));
+  $("timeline").addEventListener("input", event => {
+    pause();
+    frame = Number(event.target.value);
+    render();
+  });
+  $("reset").addEventListener("click", () => { pause(); frame = 0; finalHold = 0; render(); });
+  $("play").addEventListener("click", () => {
+    if (timer !== null) { pause(); return; }
+    finalHold = 0;
+    if (frame === scene.actions.length) { frame = 0; render(); }
+    $("play").textContent = "一時停止";
+    timer = setInterval(() => {
+      if (frame === scene.actions.length && finalHold++ < 5) return;
+      frame = (frame + 1) % (scene.actions.length + 1);
+      if (frame === 0) finalHold = 0;
+      render();
+    }, 130);
+  });
+  const both = cases.filter(item => item.both).length;
+  $("method").textContent = `未学習の崖 ${cases.length}例、各12本。両方の結果を描けた ${both}例を選択欄の先頭に表示。未来はモデルが事前に生成した32×32画像の再生です。`;
+  loadScene();
+</script>
+</body>
+</html>

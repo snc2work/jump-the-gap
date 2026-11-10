@@ -1,0 +1,44 @@
+:root {
+  color-scheme: light;
+  --paper: #f2eddf;
+  --ink: #27261d;
+  --line: #a9a292;
+  --accent: #8a3f26;
+}
+* { box-sizing: border-box; }
+body { margin: 0; color: var(--ink); background: var(--paper); font-family: Georgia, serif; }
+main { width: min(1160px, 100% - 42px); margin: 35px auto; }
+header { padding: 12px 0 15px; border-bottom: 1px solid var(--ink); }
+h1, h2, h3, p { margin: 0; }
+h1 { font-size: clamp(36px, 5vw, 58px); line-height: 1.1; letter-spacing: -.045em; }
+#status, .plan, .outcome { font: 13px/1.5 ui-monospace, monospace; }
+#status { margin-top: 8px; color: var(--accent); }
+.workspace { display: grid; grid-template-columns: minmax(0, 1fr) minmax(85px, .45fr) minmax(0, 1.55fr); gap: 22px; margin-top: 10px; }
+h2 { font-size: 18px; border-bottom: 1px solid var(--line); padding-bottom: 7px; margin-bottom: 10px; }
+.futures { display: grid; gap: 13px; }
+.detail { font-size: 14px; line-height: 1.45; margin-bottom: 12px; }
+#source { margin: 12px 0 0; }
+.thinker { align-self: start; padding-top: 76px; }
+.thinker svg { width: 100%; display: block; }
+.thoughts { color: var(--accent); opacity: .35; }
+.thinking .thoughts { opacity: 1; }
+.lcd { padding: 7px; background: #3c3c31; border-radius: 11px; box-shadow: inset 0 0 0 1px #181a15, 0 2px #9b9382; }
+canvas { width: 100%; height: auto; display: block; aspect-ratio: 1; border-radius: 5px; image-rendering: pixelated; background: #bac4a2; }
+.future { min-width: 0; display: grid; grid-template-columns: clamp(94px, 14vw, 152px) minmax(0, 1fr); align-items: center; gap: 15px; }
+.future h3 { font-size: 16px; margin-bottom: 5px; }
+.outcome { color: var(--accent); margin-top: 6px; }
+.outcome:empty { display: none; }
+.future:not(.revealed) { visibility: hidden; }
+.future.selected .lcd { outline: 3px solid var(--accent); outline-offset: 3px; }
+.future.selected h3 { color: var(--accent); }
+@media (max-width: 780px) {
+  main { width: calc(100% - 28px); margin-top: 17px; }
+  .workspace { grid-template-columns: minmax(0, 1fr) minmax(74px, .37fr); gap: 17px; }
+  .workspace > section:last-child { grid-column: 1 / -1; }
+  .current .lcd { width: min(100%, 280px); }
+  .thinker { max-width: 135px; align-self: center; padding-top: 25px; }
+}
+@media (max-width: 470px) {
+  .lcd { padding: 4px; }
+  .plan { font-size: 11px; }
+}

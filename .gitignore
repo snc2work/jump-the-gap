@@ -1,0 +1,12 @@
+/.agents/
+/.aws/
+/.codex/
+/.venv/
+/data/
+/docs/
+.DS_Store
+.env
+.env.*
+__pycache__/
+/web/node_modules/
+/web/dist/

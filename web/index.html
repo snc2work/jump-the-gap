@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Jump the Gap</title>
+</head>
+<body>
+  <main>
+    <header><h1>Jump the Gap</h1></header>
+    <div class="workspace">
+      <section class="current" aria-labelledby="current-heading">
+        <h2 id="current-heading">Current</h2>
+        <div class="lcd"><canvas id="current" width="32" height="32" role="img" aria-label="Current scene"></canvas></div>
+        <p id="source" class="detail">Starting frame from the recorded scene.</p>
+        <p id="status" role="status">Loading model…</p>
+      </section>
+      <div class="thinker">
+        <svg viewBox="0 0 142 165" role="img" aria-label="A stick figure thinking about the three futures">
+          <g fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="52" cy="57" r="18"/>
+            <path d="M51 75v44l-17 29m17-29 18 29M51 87l-15 23 20 3m-5-26 22 13-10-24"/>
+            <path d="M57 63l6 1"/>
+          </g>
+          <circle cx="61" cy="54" r="2.2" fill="currentColor"/>
+          <g class="thoughts" fill="none" stroke="currentColor" stroke-width="1.5">
+            <circle cx="83" cy="45" r="3"/>
+            <circle cx="99" cy="34" r="5"/>
+            <circle cx="120" cy="23" r="7"/>
+          </g>
+        </svg>
+      </div>
+      <section aria-labelledby="futures-heading">
+        <h2 id="futures-heading">Possible Futures</h2>
+        <p id="model-input" class="detail">The world model draws the next frame from recent frames and actions.</p>
+        <div class="futures" id="futures"></div>
+      </section>
+    </div>
+  </main>
+  <template id="future">
+    <article class="future">
+      <div class="lcd"><canvas width="32" height="32" role="img"></canvas></div>
+      <div>
+        <h3></h3>
+        <p class="plan"></p>
+        <p class="outcome"></p>
+      </div>
+    </article>
+  </template>
+  <script type="module" src="/main.js"></script>
+</body>
+</html>
