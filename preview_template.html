@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="ja">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>崖ジャンプ｜世界モデルの再生実験</title>
+<title>Jump the Gap | World model replay</title>
 <style>
   :root {
     color-scheme: light;
@@ -12,11 +12,11 @@
     --accent: #8a3f26;
     --line: #a9a292;
     --muted: #575448;
-    --mono: ui-monospace, "Hiragino Kaku Gothic ProN", monospace;
+    --mono: ui-monospace, monospace;
   }
   * { box-sizing: border-box; }
   body { margin: 0; background: var(--paper); color: var(--ink);
-    font-family: "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif; }
+    font-family: system-ui, sans-serif; }
   main { width: min(1100px, 100% - 40px); margin: 38px auto 30px; }
   header { display: flex; justify-content: space-between; align-items: end; gap: 24px;
     border-block: 1px solid var(--ink); padding: 14px 0 17px; }
@@ -61,36 +61,36 @@
 <body>
 <main>
   <header>
-    <div><p class="serial">WM / 03　・　再生実験</p><h1>崖ジャンプ</h1></div>
-    <p class="tag hardware">32 × 32 LCD<br>3層トランスフォーマー</p>
+    <div><p class="serial">WM / 03 · REPLAY</p><h1>Jump the Gap</h1></div>
+    <p class="tag hardware">32 × 32 LCD<br>3-layer Transformer</p>
   </header>
-  <p class="intro">踏み切りの直前は同じ。操作も同じ。モデルが描いた二つの未来を並べる。</p>
-  <section class="controls" aria-label="再生操作">
-    <label for="scene">評価シーン</label>
+  <p class="intro">A small world model draws two possible futures from the same starting scene and action sequence.</p>
+  <section class="controls" aria-label="Playback controls">
+    <label for="scene">Test scene</label>
     <select id="scene"></select>
-    <button type="button" id="play">再生する</button>
-    <button type="button" id="reset">最初へ</button>
-    <input id="timeline" type="range" min="0" value="0" aria-label="表示コマ">
+    <button type="button" id="play">Play</button>
+    <button type="button" id="reset">Reset</button>
+    <input id="timeline" type="range" min="0" value="0" aria-label="Frame">
     <output id="frame" for="timeline"></output>
   </section>
   <div class="units">
     <section class="unit current">
-      <h2><span class="tag">00</span>いま</h2>
+      <h2><span class="tag">00</span>Current</h2>
       <figure>
-        <div class="lcd"><canvas width="32" height="32" id="current" role="img" aria-label="踏み切り直前の盤面"></canvas></div>
-        <figcaption>二つの未来が始まる、同じ踏み切り位置。</figcaption>
+        <div class="lcd"><canvas width="32" height="32" id="current" role="img" aria-label="Scene just before takeoff"></canvas></div>
+        <figcaption>Both futures start from this frame, just before takeoff.</figcaption>
       </figure>
     </section>
     <section class="unit">
-      <h2><span class="tag">01–02</span>頭の中の未来</h2>
+      <h2><span class="tag">01–02</span>Possible Futures</h2>
       <div class="futures">
         <figure>
-          <div class="lcd"><canvas width="32" height="32" id="future-a" role="img" aria-label="未来 A の盤面"></canvas></div>
-          <figcaption>未来 A<select id="sample-a" aria-label="未来 A のサンプル"></select></figcaption>
+          <div class="lcd"><canvas width="32" height="32" id="future-a" role="img" aria-label="Frame from future A"></canvas></div>
+          <figcaption>Future A<select id="sample-a" aria-label="Sample for future A"></select></figcaption>
         </figure>
         <figure>
-          <div class="lcd"><canvas width="32" height="32" id="future-b" role="img" aria-label="未来 B の盤面"></canvas></div>
-          <figcaption>未来 B<select id="sample-b" aria-label="未来 B のサンプル"></select></figcaption>
+          <div class="lcd"><canvas width="32" height="32" id="future-b" role="img" aria-label="Frame from future B"></canvas></div>
+          <figcaption>Future B<select id="sample-b" aria-label="Sample for future B"></select></figcaption>
         </figure>
       </div>
     </section>
@@ -101,13 +101,13 @@
 <script type="application/json" id="rollouts">__ROLLOUT_DATA__</script>
 <script>
   const cases = JSON.parse(document.querySelector("#rollouts").textContent);
-  const labels = { stopped: "着地して止まる", fell_after_landing: "着地後に落ちる",
-    invalid: "画面が崩れる", other: "その他" };
+  const labels = { stopped: "Lands and stops", fell_after_landing: "Lands, then falls",
+    invalid: "Distorted frames", other: "Other" };
   const $ = id => document.getElementById(id);
   const selects = [$("sample-a"), $("sample-b")];
   const futureCanvases = [$("future-a"), $("future-b")];
   const format = n => String(n).padStart(2, "0");
-  const actions = ["惰性で進む", "走る", "跳ぶ", "ブレーキ"];
+  const actions = ["Coast", "Run", "Jump", "Brake"];
   const bytesPerFrame = 128;
   let scene, startingFrame, futures, frame = 0, timer = null;
   let finalHold = 0;
@@ -129,14 +129,14 @@
     });
     $("timeline").value = frame;
     $("frame").textContent = format(frame) + " / " + format(scene.actions.length);
-    const command = frame ? actions[scene.actions[frame - 1]] : "踏み切り直前";
-    $("plan").textContent = `助走 ${scene.run}ステップ　／　崖の間隔 ${scene.gap}px　／　着地面 ${scene.width}px　／　表示中 ${command}`;
+    const command = frame ? actions[scene.actions[frame - 1]] : "Before takeoff";
+    $("plan").textContent = `Run-up: ${scene.run} steps · Gap: ${scene.gap} px · Ledge: ${scene.width} px · Action: ${command}`;
   }
 
   function pause() {
     clearInterval(timer);
     timer = null;
-    $("play").textContent = "再生する";
+    $("play").textContent = "Play";
   }
 
   function loadScene() {
@@ -146,7 +146,7 @@
     futures = scene.samples.map(sample => atob(sample.frames));
     selects.forEach((select, i) => {
       select.replaceChildren(...scene.samples.map((sample, index) =>
-        new Option(`${format(index + 1)}　${labels[sample.outcome]}`, index)));
+        new Option(`${format(index + 1)} · ${labels[sample.outcome]}`, index)));
       select.value = scene.pair[i];
     });
     frame = 0;
@@ -157,7 +157,7 @@
   }
 
   for (const [index, item] of cases.entries()) {
-    $("scene").add(new Option(`#${format(item.number)}　${item.both ? "両方の未来が出た例" : "その他の評価例"}`, index));
+    $("scene").add(new Option(`#${format(item.number)} · ${item.both ? "Both landing outcomes" : "Other test scene"}`, index));
   }
   $("scene").addEventListener("change", loadScene);
   selects.forEach(select => select.addEventListener("change", render));
@@ -171,7 +171,7 @@
     if (timer !== null) { pause(); return; }
     finalHold = 0;
     if (frame === scene.actions.length) { frame = 0; render(); }
-    $("play").textContent = "一時停止";
+    $("play").textContent = "Pause";
     timer = setInterval(() => {
       if (frame === scene.actions.length && finalHold++ < 5) return;
       frame = (frame + 1) % (scene.actions.length + 1);
@@ -180,7 +180,7 @@
     }, 130);
   });
   const both = cases.filter(item => item.both).length;
-  $("method").textContent = `未学習の崖 ${cases.length}例、各12本。両方の結果を描けた ${both}例を選択欄の先頭に表示。未来はモデルが事前に生成した32×32画像の再生です。`;
+  $("method").textContent = `The model generated 12 futures for each of ${cases.length} test scenes. The scene menu lists the ${both} scenes with both landing outcomes first. This page replays the pre-generated 32 × 32 frames.`;
   loadScene();
 </script>
 </body>
