@@ -57,3 +57,7 @@ python3 -m venv .venv
 ```
 
 `export_web.py` updates the assets under `web/public/model/`. To save a standalone replay of sampled futures, run `.venv/bin/python export_preview.py` and open `data/preview.html`.
+
+## License
+
+[MIT](LICENSE)

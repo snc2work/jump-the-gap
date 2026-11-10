@@ -83,3 +83,7 @@ open data/preview.html
 ```
 
 ONNXモデルと7コース分の開始場面を `web/public/model/` に出力します。
+
+## ライセンス
+
+[MIT](LICENSE)
