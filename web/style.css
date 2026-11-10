@@ -2,7 +2,6 @@
   color-scheme: light;
   --paper: #f2eddf;
   --ink: #27261d;
-  --line: #a9a292;
   --accent: #8a3f26;
   --selected: #174fe0;
 }
@@ -23,7 +22,7 @@ h1 { font-size: clamp(36px, 5vw, 58px); line-height: 1.1; letter-spacing: -.045e
 #status, .plan, .outcome { font: 13px/1.5 ui-monospace, monospace; }
 #status { margin-top: 8px; color: var(--accent); }
 .workspace { display: grid; grid-template-columns: minmax(0, 1fr) minmax(85px, .45fr) minmax(0, 1.55fr); gap: 22px; margin-top: 10px; }
-h2 { font-size: 18px; border-bottom: 1px solid var(--line); padding-bottom: 7px; margin-bottom: 10px; }
+h2 { font-size: 18px; margin-bottom: 12px; }
 .futures { display: grid; gap: 13px; }
 .detail { font-size: 14px; line-height: 1.45; margin-bottom: 12px; }
 #source { margin: 12px 0 0; }
